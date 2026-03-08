@@ -10,5 +10,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', home_redirect), 
     path("", include("authentication.urls")),
-    path("", include("accounts.urls")),
+    path("", include("profiles.urls")),
 ]

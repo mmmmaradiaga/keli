@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="shell">
+    {% include "./left-nav.html" %}
+
+    {% block main %}
+      {% include "./feed.html" %}
+    {% endblock %}
+    
+</div>
+
+<script>
+  function setTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function toggleLike(btn) {
+    btn.classList.toggle('liked');
+    const svg = btn.querySelector('svg');
+    const span = btn.querySelector('span');
+    const isLiked = btn.classList.contains('liked');
+    svg.setAttribute('fill', isLiked ? 'currentColor' : 'none');
+    btn.classList.add('popping');
+    setTimeout(() => btn.classList.remove('popping'), 250);
+    // Update count (naive toggle)
+    const n = parseInt(span.textContent.replace('k','')) ;
+    if(span.textContent.includes('k')) {
+      span.textContent = isLiked
+        ? (parseFloat(span.textContent) + 0.1).toFixed(1) + 'k'
+        : (parseFloat(span.textContent) - 0.1).toFixed(1) + 'k';
+    } else {
+      span.textContent = isLiked ? n + 1 : n - 1;
+    }
+  }
+
+  function toggleRepost(btn) {
+    btn.classList.toggle('reposted');
+    const span = btn.querySelector('span');
+    const n = parseInt(span.textContent);
+    span.textContent = btn.classList.contains('reposted') ? n + 1 : n - 1;
+  }
+
+  function toggleFollow(btn) {
+    const isFollowing = btn.classList.contains('following');
+    btn.classList.toggle('following');
+    btn.textContent = isFollowing ? 'Follow' : 'Following';
+  }
+</script>
+{% endblock %}

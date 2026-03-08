@@ -1,0 +1,109 @@
+{% block main %}
+  <main class="feed">
+    <!-- Sticky header -->
+    <div class="feed-header fi fi-1">
+      <div class="tab-row">
+        <div class="tab active" onclick="setTab(this)">For You</div>
+        <div class="tab" onclick="setTab(this)">Following</div>
+        <div class="tab" onclick="setTab(this)">Lists</div>
+        <div class="tab" onclick="setTab(this)">Topics</div>
+      </div>
+    </div>
+
+    <!-- Compose -->
+    {% include "profiles/components/create-post.html" with user=current_user%}
+
+    <!-- ── POSTS ── -->
+
+    {% for post in posts %}
+    {% with delay="fi-"|add:forloop.counter|stringformat:"s" %}
+      {% include "profiles/components/post.html" with post=post user=post.author delay=delay %}
+    {% endwith %}
+    {% empty %}
+      <div style="padding:48px; text-align:center; color:var(--ink3);">
+      Nothing here yet. Follow some people.
+      </div>
+    {% endfor %}
+  </main>
+
+  <!-- ══ RIGHT SIDEBAR ══ -->
+  <aside class="sidebar fi fi-2">
+
+    <!-- Your profile card -->
+    {% include "./components/profile-card.html" %}
+
+    <!-- Who to follow -->
+    <div class="who-card fi fi-4">
+      <div class="who-card-title">Who to follow</div>
+
+
+
+      <div class="suggest-item">
+        <div class="suggest-avatar" style="background:linear-gradient(135deg,#2a7a4b,#4db87a);">EC</div>
+        <div class="suggest-info">
+          <div class="suggest-name">Elena Cruz</div>
+          <div class="suggest-handle">@elenacruz</div>
+        </div>
+        <button class="follow-btn following" onclick="toggleFollow(this)">Following</button>
+      </div>
+
+      <div class="suggest-item">
+        <div class="suggest-avatar" style="background:linear-gradient(135deg,#7a2a7a,#b470b4);">OB</div>
+        <div class="suggest-info">
+          <div class="suggest-name">Oscar Brandt</div>
+          <div class="suggest-handle">@oscarb</div>
+        </div>
+        <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+      </div>
+
+      <div class="suggest-item">
+        <div class="suggest-avatar" style="background:linear-gradient(135deg,#c87a2f,#e8b060);">LF</div>
+        <div class="suggest-info">
+          <div class="suggest-name">Lena Fischer</div>
+          <div class="suggest-handle">@lenaf</div>
+        </div>
+        <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+      </div>
+
+      <div style="padding:12px 16px;">
+        <span style="font-size:13px;color:var(--accent2);cursor:pointer;font-weight:500;">Show more →</span>
+      </div>
+    </div>
+
+    <!-- Trending -->
+    <div class="trend-card fi fi-5">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;padding:14px 16px 10px;">Trending</div>
+
+      <div class="trend-item">
+        <div class="trend-category">Design · Trending</div>
+        <div class="trend-name">#DesignSystems</div>
+        <div class="trend-count">14.2k posts</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-category">Technology</div>
+        <div class="trend-name">#OpenSource</div>
+        <div class="trend-count">9.8k posts</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-category">Product · Trending</div>
+        <div class="trend-name">#ShipIt</div>
+        <div class="trend-count">6.1k posts</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-category">Engineering</div>
+        <div class="trend-name">#WebPerf</div>
+        <div class="trend-count">4.4k posts</div>
+      </div>
+
+      <div style="padding:12px 16px;">
+        <span style="font-size:13px;color:var(--accent2);cursor:pointer;font-weight:500;">Show more →</span>
+      </div>
+    </div>
+
+    <div style="padding:12px 4px;font-size:11px;color:var(--ink3);line-height:1.8;">
+      Terms · Privacy · Cookies · Accessibility · Ads info<br>© 2025 Sonder, Inc.
+    </div>
+
+  </aside>
+
+{% endblock %}

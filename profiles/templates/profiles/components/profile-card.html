@@ -1,0 +1,17 @@
+<div class="profile-card fi fi-3">
+    <div class="profile-banner">
+    <div class="profile-avatar-wrap">
+        <div class="profile-avatar">{{user.profile.initials}}</div>
+    </div>
+    </div>
+    <div class="profile-body">
+    <div class="profile-name">{{user.name}}</div>
+    <div class="profile-handle">@{{user.username}} · <span style="color:var(--accent);font-size:12px;cursor:pointer;">Edit profile</span></div>
+    <div class="profile-bio">{{user.profile.bio}}</div>
+    <div class="profile-stats">
+        <div><span class="stat-num">{{user.profile.following_count}}</span> <span class="stat-label">Following</span></div>
+        <div><span class="stat-num">{{user.profile.followers_count}}</span> <span class="stat-label">Followers</span></div>
+        <div><span class="stat-num">{{user.profile.posts_count}}</span> <span class="stat-label">Posts</span></div>
+    </div>
+    </div>
+</div>

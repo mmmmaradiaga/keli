@@ -1,0 +1,114 @@
+<div class="post fi {{ delay|default:'fi-1' }}" data-post-id="{{ post.id }}">
+  {# Avatar #}
+  {% if user.avatar %}
+    <img
+      class="post-avatar"
+      src="{{ user.avatar.url }}"
+      alt="{{ user.get_full_name }}"
+      style="object-fit:cover; width:42px; height:42px; border-radius:50%;"
+    />
+  {% else %}
+    <div
+      class="post-avatar"
+      aria-label="{{ user.name }}"
+      style="background:linear-gradient({{ user.avatar_color }});"
+    >{{ user.initials }}</div>
+  {% endif %}
+
+  <div>
+
+    {# Header #}
+    <div class="post-header">
+      <span class="post-name">{{ user.name }}</span>
+
+      {% if user.profile.is_verified %}
+        <div class="verified" aria-label="Verified account">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="white">
+            <path d="M2 5l2 2 4-4" stroke="white" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+      {% endif %}
+
+      <span class="post-handle">@{{ user.username }}</span>
+      <span class="post-time">{{ post.time }} ago</span>
+    </div>
+
+    {# Body — autoescaped, use |safe only if you're storing pre-sanitized HTML #}
+    <div class="post-body">{{ post.body }}</div>
+
+    {# Optional image attachment #}
+    {% if post.attachment %}
+      <div class="post-img">
+        <img
+          src="{{ post.attachment.url }}"
+          alt="Post attachment"
+          style="width:100%; height:200px; object-fit:cover; display:block;"
+        />
+      </div>
+    {% endif %}
+
+    {# Optional quoted post — recursive include, one level deep #}
+    {% if post.quote %}
+      <div class="quote-card">
+        <div style="display:flex; gap:6px; align-items:baseline; margin-bottom:4px;">
+          <span class="quote-name">{{ post.quote.author.get_full_name }}</span>
+          <span class="quote-handle">@{{ post.quote.author.username }}</span>
+        </div>
+        <div class="quote-body">{{ post.quote.body }}</div>
+      </div>
+    {% endif %}
+
+    {# Actions #}
+    <div class="post-actions">
+
+      <div
+        class="action-btn {% if post.is_liked_by_user %}liked{% endif %}"
+        onclick="toggleLike(this)"
+        data-post-id="{{ post.id }}"
+        aria-label="Like"
+        aria-pressed="{{ post.is_liked_by_user|yesno:'true,false' }}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24"
+             fill="{% if post.is_liked_by_user %}currentColor{% else %}none{% endif %}"
+             stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        </svg>
+        <span>{{ post.likes_count }}</span>
+      </div>
+
+      <div
+        class="action-btn"
+        onclick="openComments('{{ post.id }}')"
+        aria-label="Comment"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/>
+        </svg>
+        <span>{{ post.comments_count }}</span>
+      </div>
+
+      <div
+        class="action-btn {% if post.is_reposted_by_user %}reposted{% endif %}"
+        onclick="toggleRepost(this)"
+        data-post-id="{{ post.id }}"
+        aria-label="Repost"
+        aria-pressed="{{ post.is_reposted_by_user|yesno:'true,false' }}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="17 1 21 5 17 9"/>
+          <path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/>
+          <path d="M21 13v2a4 4 0 01-4 4H3"/>
+        </svg>
+        <span>{{ post.reposts_count }}</span>
+      </div>
+
+      <div class="action-btn" aria-label="Share">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</div>
